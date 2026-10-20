@@ -27,6 +27,10 @@ jobs:
 
       - name: Настроить Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # не ставим устаревший пакет 'tools' (его больше нет в SDK);
+          # нужные компоненты Gradle докачает сам при сборке
+          packages: ''
 
       - name: Разрешить запуск gradlew
         run: chmod +x gradlew
