@@ -1,0 +1,7 @@
+# Сервер построен на Starlette (это основа, на которой работает и FastAPI).
+# Пароли хешируются встроенным в Python модулем hashlib — отдельная библиотека не нужна.
+starlette>=0.37
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+PyJWT>=2.8
+jinja2>=3.1

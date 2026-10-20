@@ -1,0 +1,42 @@
+name: Сборка APK
+
+# Запускается при каждом пуше в ветку, а также вручную кнопкой "Run workflow"
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Проект Android лежит в подпапке android/
+    defaults:
+      run:
+        working-directory: android
+
+    steps:
+      - name: Забрать код
+        uses: actions/checkout@v4
+
+      - name: Поставить JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Настроить Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Разрешить запуск gradlew
+        run: chmod +x gradlew
+
+      - name: Собрать debug APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Выложить APK как артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-sync-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
